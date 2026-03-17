@@ -9,8 +9,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
-import { Product } from '@prisma/client';
 import { DecreaseStockDto } from './dto/decrease-stock.dto';
+import { ProductResponseDto } from './dto/product-response.dto';
 import { ProductsService } from './products.service';
 
 @Controller('products')
@@ -18,7 +18,7 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Get(':id')
-  getById(@Param('id', ParseIntPipe) id: number): Promise<Product> {
+  getById(@Param('id', ParseIntPipe) id: number): Promise<ProductResponseDto> {
     return this.productsService.getById(id);
   }
 
@@ -34,7 +34,7 @@ export class ProductsController {
   decreaseStock(
     @Param('id', ParseIntPipe) id: number,
     @Body() decreaseStockDto: DecreaseStockDto,
-  ): Promise<Product> {
+  ): Promise<ProductResponseDto> {
     return this.productsService.decreaseStock(id, decreaseStockDto.amount);
   }
 }
